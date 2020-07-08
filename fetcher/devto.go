@@ -1,28 +1,21 @@
 package main
 
 import (
+	"fmt"
+	types "github.com/gordonpn/rss-feed-for-developers/fetcher/pkg"
 	log "github.com/sirupsen/logrus"
 	"time"
 )
-
-type DevToPost struct {
-	Title       string
-	Link        string
-	Description string
-	Published   time.Time
-	Author      string
-	ID          int
-}
 
 func init() {
 	log.SetLevel(log.DebugLevel)
 }
 
-func fetchDevToPosts() (devPosts []DevToPost) {
+func fetchDevToPosts() (devPosts []types.Post) {
 	log.Info("Fetching Dev.to posts")
 	var resMap []map[string]interface{}
 	err := getJSON("https://dev.to/api/articles?top=30", &resMap, nil)
-	checkAndPanic(err)
+	checkAndPanic("Error with parsing JSON", err)
 	for _, post := range resMap {
 		title, _ := post["title"].(string)
 		link, _ := post["canonical_url"].(string)
@@ -31,8 +24,8 @@ func fetchDevToPosts() (devPosts []DevToPost) {
 		published, _ := time.Parse(time.RFC3339, publishedString)
 		author, _ := post["user"].(map[string]interface{})["name"].(string)
 		idFloat, _ := post["id"].(float64)
-		id := int(idFloat)
-		aPost := DevToPost{
+		id := fmt.Sprintf("%.0f", idFloat)
+		aPost := types.Post{
 			Title:       title,
 			Link:        link,
 			Description: description,
@@ -42,9 +35,6 @@ func fetchDevToPosts() (devPosts []DevToPost) {
 		}
 		devPosts = append(devPosts, aPost)
 	}
-	//s, _ := json.MarshalIndent(devPosts, "", "\t")
-	//fmt.Printf("%s\n", s)
-	//fmt.Printf("Length: %d\n", len(devPosts))
 	log.Info("Done fetching Dev.to posts")
 	return
 }
