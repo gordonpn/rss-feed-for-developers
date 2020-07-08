@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  postgres:
+    container_name: rss-feed-postgres-dev
+    volumes:
+      - dev-postgres-rss-feed:/var/lib/postgresql/data/
+    ports:
+      - "127.0.0.1:5432:5432"
+
+volumes:
+  dev-postgres-rss-feed:
+    external:
+      name: dev-postgres-rss-feed

@@ -29,7 +29,7 @@ func (database *Database) connect() error {
 	}
 	user := os.Getenv("POSTGRES_NONROOT_USER")
 	password := os.Getenv("POSTGRES_NONROOT_PASSWORD")
-	dbname := os.Getenv("POSTGRES_NONROOT_DB")
+	dbname := "app_database"
 	port := 5432
 	pgURI := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbname)
 	log.Info("Connecting to database...")
@@ -58,7 +58,7 @@ func (database *Database) connect() error {
 func (database *Database) insert(items []types.Post) error {
 	log.Info("Inserting posts into database")
 	for _, item := range items {
-		query := `INSERT INTO posts (title, link, description, published, author, id)
+		query := `INSERT INTO posts (title, link, summary, published, author, id)
 			VALUES ($1, $2, $3, $4, $5, $6)
 			ON CONFLICT (id) DO NOTHING`
 		_, err := database.connection.Exec(query, item.Title, item.Link, item.Description, item.Published, item.Author, item.ID)

@@ -1,0 +1,8 @@
+#!/bin/bash
+set -euo pipefail
+
+psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname app_database <<-EOSQL
+	GRANT ALL PRIVILEGES ON DATABASE app_database TO ${POSTGRES_NONROOT_USER};
+	GRANT ALL PRIVILEGES ON TABLE posts TO ${POSTGRES_NONROOT_USER};
+	ALTER TABLE posts OWNER TO ${POSTGRES_NONROOT_USER};
+EOSQL
