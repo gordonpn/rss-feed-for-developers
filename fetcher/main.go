@@ -10,5 +10,6 @@ func init() {
 
 func main() {
 	_ = fetchDevToPosts()
-	fetchRedditListings()
+	subs := getSubreddits()
+	fetchRedditListings(subs)
 }

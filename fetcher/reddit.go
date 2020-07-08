@@ -10,9 +10,18 @@ import (
 	"net/url"
 	"os"
 	"strings"
+	"time"
 )
 
 var userAgent = "github.com/gordonpn/rss-feed-for-developers by /u/gordonpn"
+
+type RedditPost struct {
+	Title     string
+	Link      string
+	Published time.Time
+	Author    string
+	ID        string
+}
 
 func init() {
 	if err := godotenv.Load(); err != nil {
@@ -46,7 +55,7 @@ func authenticate() (accessToken string) {
 	return
 }
 
-func fetchRedditListings() {
+func fetchRedditListings(subreddits []string) {
 	log.Info("Fetching top posts from Reddit")
 	accessToken := authenticate()
 	headers := map[string]string{
@@ -54,11 +63,30 @@ func fetchRedditListings() {
 		"User-Agent":    userAgent,
 	}
 	var resp map[string]interface{}
-	redditURL := "https://oauth.reddit.com/api/v1/me"
-	log.Info(fmt.Sprintf("Processing: %s", redditURL))
-	err := getJSON(redditURL, &resp, headers)
+	for _, subreddit := range subreddits {
+		redditURL := fmt.Sprintf("https://oauth.reddit.com/r/%s/top?limit=2&t=day", subreddit)
+		log.Info(fmt.Sprintf("Processing: %s", redditURL))
+		err := getJSON(redditURL, &resp, headers)
+		checkAndPanic(err)
+		log.Info(fmt.Sprintf("Done processing: %s", redditURL))
+		s, _ := json.MarshalIndent(resp, "", "\t")
+		fmt.Printf("%s\n", s)
+	}
+}
+
+func getSubreddits() (subreddits []string) {
+	log.Info("Opening data file")
+	jsonFile, err := os.Open("data.json")
 	checkAndPanic(err)
-	log.Info(fmt.Sprintf("Done processing: %s", redditURL))
-	//s, _ := json.MarshalIndent(resp, "", "\t")
-	//fmt.Printf("%s\n", s)
+	log.Info("Successfully opened data file")
+	defer jsonFile.Close()
+	var data map[string]interface{}
+	err = json.NewDecoder(jsonFile).Decode(&data)
+	checkAndPanic(err)
+	subs := data["subreddits"].([]interface{})
+	for _, sub := range subs {
+		subreddits = append(subreddits, sub.(string))
+	}
+	//fmt.Printf("%s\n", subreddits)
+	return
 }
