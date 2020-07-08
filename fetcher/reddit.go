@@ -55,23 +55,44 @@ func authenticate() (accessToken string) {
 	return
 }
 
-func fetchRedditListings(subreddits []string) {
+func fetchRedditListings(subreddits []string) (redditPosts []RedditPost) {
 	log.Info("Fetching top posts from Reddit")
 	accessToken := authenticate()
 	headers := map[string]string{
 		"Authorization": fmt.Sprintf("bearer %s", accessToken),
 		"User-Agent":    userAgent,
 	}
-	var resp map[string]interface{}
 	for _, subreddit := range subreddits {
+		var resp map[string]interface{}
 		redditURL := fmt.Sprintf("https://oauth.reddit.com/r/%s/top?limit=2&t=day", subreddit)
 		log.Info(fmt.Sprintf("Processing: %s", redditURL))
 		err := getJSON(redditURL, &resp, headers)
 		checkAndPanic(err)
+		data := resp["data"].(map[string]interface{})
+		children := data["children"].([]interface{})
+		for _, child := range children {
+			aChild := child.(map[string]interface{})
+			childData := aChild["data"].(map[string]interface{})
+			title := childData["title"].(string)
+			permalink := childData["permalink"].(string)
+			author := childData["author"].(string)
+			createdTime := childData["created_utc"].(float64)
+			published := time.Unix(int64(createdTime), 0)
+			id := childData["id"].(string)
+			aPost := RedditPost{
+				Title:     title,
+				Link:      fmt.Sprintf("https://reddit.com%s", permalink),
+				Author:    author,
+				Published: published,
+				ID:        id,
+			}
+			redditPosts = append(redditPosts, aPost)
+		}
 		log.Info(fmt.Sprintf("Done processing: %s", redditURL))
-		s, _ := json.MarshalIndent(resp, "", "\t")
-		fmt.Printf("%s\n", s)
+		//s, _ := json.MarshalIndent(redditPosts, "", "\t")
+		//fmt.Printf("%s\n", s)
 	}
+	return
 }
 
 func getSubreddits() (subreddits []string) {
