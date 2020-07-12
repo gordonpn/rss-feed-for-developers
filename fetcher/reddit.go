@@ -56,6 +56,10 @@ func fetchRedditListings(subreddits []string) (redditPosts []types.Post) {
 		"User-Agent":    userAgent,
 	}
 	for _, subreddit := range subreddits {
+		if !isValid(subreddit) {
+			log.Warn(fmt.Sprintf("%s may not be a valid subreddit!", subreddit))
+			continue
+		}
 		var resp map[string]interface{}
 		redditURL := fmt.Sprintf("https://oauth.reddit.com/r/%s/top?limit=2&t=day", subreddit)
 		log.Info(fmt.Sprintf("Processing: %s", redditURL))
@@ -103,4 +107,12 @@ func getSubreddits() (subreddits []string) {
 	}
 	//fmt.Printf("%s\n", subreddits)
 	return
+}
+
+func isValid(subreddit string) bool {
+	res, err := httpClient.Head(fmt.Sprintf("https://www.reddit.com/r/%s", subreddit))
+	if err != nil {
+		return false
+	}
+	return res.StatusCode != 404
 }
