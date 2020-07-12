@@ -5,5 +5,5 @@ CREATE TABLE posts (
   summary TEXT,
   published TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   author TEXT,
-  id TEXT NOT NULL
+  id TEXT NOT NULL UNIQUE
 );

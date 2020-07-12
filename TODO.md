@@ -3,7 +3,7 @@
 ## Fetcher
 
 * [x] Prepare SQL init scripts and schema
-* [ ] Insert the data into the database
+* [x] Insert the data into the database
 * [x] Mount data.json from host machine to Docker container to allow externally changing the configuration
 * [ ] Schedule to run twice per day
 

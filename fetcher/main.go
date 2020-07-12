@@ -9,7 +9,14 @@ func init() {
 }
 
 func main() {
-	_ = fetchDevToPosts()
+	db := Database{}
+	fetchedDevToPosts := fetchDevToPosts()
 	subs := getSubreddits()
-	_ = fetchRedditListings(subs)
+	fetchedRedditPosts := fetchRedditListings(subs)
+	err := db.connect()
+	checkAndPanic("Error with connecting to database", err)
+	err = db.insert(fetchedDevToPosts)
+	checkAndPanic("Error with inserted Dev.to posts", err)
+	err = db.insert(fetchedRedditPosts)
+	checkAndPanic("Error with inserting Reddit posts", err)
 }

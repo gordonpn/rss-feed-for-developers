@@ -1,4 +1,4 @@
-.PHONY: up-pg clean-db
+.PHONY: up-pg clean-db up pg
 
 up:
 	docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build
@@ -9,3 +9,6 @@ up-pg:
 clean-db:
 	docker volume rm dev-postgres-rss-feed
 	docker volume create --name=dev-postgres-rss-feed
+
+pg:
+	docker exec -it rss-feed-postgres-dev sh

@@ -12,8 +12,6 @@ services:
     build:
       context: ./fetcher
       dockerfile: Dockerfile.dev
-    environment:
-      - POSTGRES_HOST=localhost
     volumes:
       - ./fetcher/data.json:/app/data.json
 
