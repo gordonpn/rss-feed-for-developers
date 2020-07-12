@@ -11,6 +11,7 @@ var httpClient = &http.Client{Timeout: 10 * time.Second}
 
 func checkAndPanic(message string, err error) {
 	if err != nil {
+		signalHealthCheck(FAIL)
 		log.Errorf("%s", message)
 		log.Panic(err)
 	}

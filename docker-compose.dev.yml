@@ -14,6 +14,8 @@ services:
       dockerfile: Dockerfile.dev
     volumes:
       - ./fetcher/data.json:/app/data.json
+    environment:
+      - DEV=true
 
 volumes:
   dev-postgres-rss-feed:
