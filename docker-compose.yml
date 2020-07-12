@@ -11,3 +11,18 @@ services:
       - TZ=America/Montreal
     volumes:
       - ./.docker/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+
+  fetcher:
+    build:
+      context: ./fetcher
+      dockerfile: Dockerfile
+    environment:
+      - TZ=America/Montreal
+      - REDDIT_USERNAME
+      - REDDIT_PASSWORD
+      - REDDIT_ID
+      - REDDIT_SECRET
+      - POSTGRES_NONROOT_USER
+      - POSTGRES_NONROOT_PASSWORD
+    depends_on:
+      - postgres

@@ -7,6 +7,16 @@ services:
     ports:
       - "127.0.0.1:5432:5432"
 
+  fetcher:
+    container_name: rss-feed-fetcher-dev
+    build:
+      context: ./fetcher
+      dockerfile: Dockerfile.dev
+    environment:
+      - POSTGRES_HOST=localhost
+    volumes:
+      - ./fetcher/data.json:/app/data.json
+
 volumes:
   dev-postgres-rss-feed:
     external:
