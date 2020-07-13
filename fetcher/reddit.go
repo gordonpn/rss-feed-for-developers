@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	types "github.com/gordonpn/rss-feed-for-developers/fetcher/pkg"
-	"github.com/joho/godotenv"
 	log "github.com/sirupsen/logrus"
 	"io/ioutil"
 	"net/http"
@@ -15,13 +14,6 @@ import (
 )
 
 var userAgent = "github.com/gordonpn/rss-feed-for-developers by /u/gordonpn"
-
-func init() {
-	if err := godotenv.Load(); err != nil {
-		log.Warn(fmt.Sprintf("Did not load .env file: %v", err))
-	}
-	log.SetLevel(log.DebugLevel)
-}
 
 func authenticate() (accessToken string) {
 	log.Info("Authenticating Reddit API")

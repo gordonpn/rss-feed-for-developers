@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/joho/godotenv"
 	log "github.com/sirupsen/logrus"
 	"github.com/whiteshtef/clockwork"
@@ -10,7 +11,7 @@ import (
 func init() {
 	err := godotenv.Load()
 	if err != nil {
-		log.WithFields(log.Fields{"Error": err}).Warn("Problem with loading .env file")
+		log.Warn(fmt.Sprintf("Did not load .env file: %v", err))
 	}
 	log.SetLevel(log.DebugLevel)
 }
