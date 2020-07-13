@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/joho/godotenv"
 	log "github.com/sirupsen/logrus"
 	"github.com/whiteshtef/clockwork"
-	"os"
 )
 
 func init() {

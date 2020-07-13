@@ -3,12 +3,13 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"os"
+	"time"
+
 	types "github.com/gordonpn/rss-feed-for-developers/fetcher/pkg"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 	log "github.com/sirupsen/logrus"
-	"os"
-	"time"
 )
 
 type Database struct {

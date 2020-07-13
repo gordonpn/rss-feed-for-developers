@@ -2,8 +2,9 @@ package main
 
 import (
 	"fmt"
-	log "github.com/sirupsen/logrus"
 	"os"
+
+	log "github.com/sirupsen/logrus"
 )
 
 type Status string

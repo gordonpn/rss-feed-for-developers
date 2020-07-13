@@ -2,9 +2,10 @@ package main
 
 import (
 	"encoding/json"
-	log "github.com/sirupsen/logrus"
 	"net/http"
 	"time"
+
+	log "github.com/sirupsen/logrus"
 )
 
 var httpClient = &http.Client{Timeout: 10 * time.Second}

@@ -3,14 +3,15 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	types "github.com/gordonpn/rss-feed-for-developers/fetcher/pkg"
-	log "github.com/sirupsen/logrus"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"os"
 	"strings"
 	"time"
+
+	types "github.com/gordonpn/rss-feed-for-developers/fetcher/pkg"
+	log "github.com/sirupsen/logrus"
 )
 
 var userAgent = "github.com/gordonpn/rss-feed-for-developers by /u/gordonpn"
@@ -31,16 +32,16 @@ func authenticate() (accessToken string) {
 	defer resp.Body.Close()
 	respData, err := ioutil.ReadAll(resp.Body)
 	checkAndPanic("Error with parsing response body", err)
-	//fmt.Printf("%s\n", respData)
-	var respMap map[string]interface{}
-	err = json.Unmarshal(respData, &respMap)
+	var respBody map[string]interface{}
+	err = json.Unmarshal(respData, &respBody)
 	checkAndPanic("Error with unmarshalling response", err)
-	accessToken, _ = respMap["access_token"].(string)
+	accessToken, _ = respBody["access_token"].(string)
 	log.Info("Done authenticating Reddit API")
 	return
 }
 
-func fetchRedditListings(subreddits []string) (redditPosts []types.Post) {
+func fetchRedditListings(subreddits []string) []types.Post {
+	var redditPosts []types.Post
 	log.Info("Fetching top posts from Reddit")
 	accessToken := authenticate()
 	headers := map[string]string{
@@ -78,10 +79,8 @@ func fetchRedditListings(subreddits []string) (redditPosts []types.Post) {
 			redditPosts = append(redditPosts, aPost)
 		}
 		log.Info(fmt.Sprintf("Done processing: %s", redditURL))
-		//s, _ := json.MarshalIndent(redditPosts, "", "\t")
-		//fmt.Printf("%s\n", s)
 	}
-	return
+	return redditPosts
 }
 
 func getSubreddits() (subreddits []string) {
@@ -97,7 +96,6 @@ func getSubreddits() (subreddits []string) {
 	for _, sub := range subs {
 		subreddits = append(subreddits, sub.(string))
 	}
-	//fmt.Printf("%s\n", subreddits)
 	return
 }
 
@@ -106,5 +104,6 @@ func isValid(subreddit string) bool {
 	if err != nil {
 		return false
 	}
+	defer res.Body.Close()
 	return res.StatusCode != 404
 }

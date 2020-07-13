@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
+	"time"
+
 	types "github.com/gordonpn/rss-feed-for-developers/fetcher/pkg"
 	log "github.com/sirupsen/logrus"
-	"time"
 )
 
 func init() {
@@ -13,10 +14,10 @@ func init() {
 
 func fetchDevToPosts() (devPosts []types.Post) {
 	log.Info("Fetching Dev.to posts")
-	var resMap []map[string]interface{}
-	err := getJSON("https://dev.to/api/articles?top=30", &resMap, nil)
+	var resp []map[string]interface{}
+	err := getJSON("https://dev.to/api/articles?top=30", &resp, nil)
 	checkAndPanic("Error with parsing JSON", err)
-	for _, post := range resMap {
+	for _, post := range resp {
 		title, _ := post["title"].(string)
 		link, _ := post["canonical_url"].(string)
 		description, _ := post["description"].(string)
