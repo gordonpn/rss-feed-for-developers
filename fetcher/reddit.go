@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"math/rand"
 	"net/http"
 	"net/url"
 	"os"
@@ -36,7 +37,7 @@ func authenticate() (accessToken string) {
 	err = json.Unmarshal(respData, &respBody)
 	checkAndPanic("Error with unmarshalling response", err)
 	accessToken, _ = respBody["access_token"].(string)
-	log.Info("Done authenticating Reddit API")
+	log.Info("Authenticating Reddit API: done")
 	return
 }
 
@@ -78,8 +79,12 @@ func fetchRedditListings(subreddits []string) []types.Post {
 			}
 			redditPosts = append(redditPosts, aPost)
 		}
-		log.Info(fmt.Sprintf("Done processing: %s", redditURL))
+		log.Info(fmt.Sprintf("Processing: %s: done", redditURL))
+		rand.Seed(time.Now().UnixNano())
+		n := rand.Intn(10)
+		time.Sleep(time.Duration(n) * time.Second)
 	}
+	log.Info("Fetching top posts from Reddit: done")
 	return redditPosts
 }
 
@@ -87,7 +92,7 @@ func getSubreddits() (subreddits []string) {
 	log.Info("Opening data file")
 	jsonFile, err := os.Open("data.json")
 	checkAndPanic("Error with opening data file", err)
-	log.Info("Successfully opened data file")
+	log.Info("Opening data file: done")
 	defer jsonFile.Close()
 	var data map[string]interface{}
 	err = json.NewDecoder(jsonFile).Decode(&data)

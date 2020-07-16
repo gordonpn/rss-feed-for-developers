@@ -36,6 +36,6 @@ func fetchDevToPosts() (devPosts []types.Post) {
 		}
 		devPosts = append(devPosts, aPost)
 	}
-	log.Info("Done fetching Dev.to posts")
+	log.Info("Fetching Dev.to posts: done")
 	return
 }

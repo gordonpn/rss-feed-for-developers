@@ -67,6 +67,6 @@ func (database *Database) insert(items []types.Post) error {
 			return err
 		}
 	}
-	log.Info("Done inserting posts into database")
+	log.Info("Inserting posts into database: done")
 	return nil
 }
