@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"regexp"
 	"time"
 
 	types "github.com/gordonpn/rss-feed-for-developers/fetcher/pkg"
@@ -17,13 +18,17 @@ func fetchDevToPosts() (devPosts []types.Post) {
 	var resp []map[string]interface{}
 	err := getJSON("https://dev.to/api/articles?top=30", &resp, nil)
 	checkAndPanic("Error with parsing JSON", err)
+	re := regexp.MustCompile("[[:^ascii:]]")
 	for _, post := range resp {
 		title, _ := post["title"].(string)
+		title = re.ReplaceAllLiteralString(title, "")
 		link, _ := post["canonical_url"].(string)
 		description, _ := post["description"].(string)
+		description = re.ReplaceAllLiteralString(description, "")
 		publishedString, _ := post["published_at"].(string)
 		published, _ := time.Parse(time.RFC3339, publishedString)
 		author, _ := post["user"].(map[string]interface{})["name"].(string)
+		author = re.ReplaceAllLiteralString(author, "")
 		idFloat, _ := post["id"].(float64)
 		id := fmt.Sprintf("%.0f", idFloat)
 		aPost := types.Post{

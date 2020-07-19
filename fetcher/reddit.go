@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"regexp"
 	"strings"
 	"time"
 
@@ -49,22 +50,25 @@ func fetchRedditListings(subreddits []string) []types.Post {
 		"Authorization": fmt.Sprintf("bearer %s", accessToken),
 		"User-Agent":    userAgent,
 	}
-	for _, subreddit := range subreddits {
+	for i, subreddit := range subreddits {
+		log.Info(fmt.Sprintf("Progress: %d/%d", i+1, len(subreddits)))
 		if !isValid(subreddit) {
 			log.Warn(fmt.Sprintf("%s may not be a valid subreddit!", subreddit))
 			continue
 		}
 		var resp map[string]interface{}
 		redditURL := fmt.Sprintf("https://oauth.reddit.com/r/%s/top?limit=2&t=day", subreddit)
-		log.Info(fmt.Sprintf("Processing: %s", redditURL))
+		log.Info(fmt.Sprintf("Processing: %s", subreddit))
 		err := getJSON(redditURL, &resp, headers)
 		checkAndPanic("Error with parsing JSON", err)
 		data := resp["data"].(map[string]interface{})
 		children := data["children"].([]interface{})
+		re := regexp.MustCompile("[[:^ascii:]]")
 		for _, child := range children {
 			aChild := child.(map[string]interface{})
 			childData := aChild["data"].(map[string]interface{})
 			title := childData["title"].(string)
+			title = re.ReplaceAllLiteralString(title, "")
 			permalink := childData["permalink"].(string)
 			author := childData["author"].(string)
 			createdTime := childData["created_utc"].(float64)
@@ -79,7 +83,7 @@ func fetchRedditListings(subreddits []string) []types.Post {
 			}
 			redditPosts = append(redditPosts, aPost)
 		}
-		log.Info(fmt.Sprintf("Processing: %s: done", redditURL))
+		log.Info(fmt.Sprintf("Processing: %s: done", subreddit))
 		rand.Seed(time.Now().UnixNano())
 		n := rand.Intn(10)
 		time.Sleep(time.Duration(n) * time.Second)

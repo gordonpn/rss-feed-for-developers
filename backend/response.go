@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"encoding/xml"
 	log "github.com/sirupsen/logrus"
 	"net/http"
 )
@@ -21,11 +20,10 @@ func respondWithJSON(w http.ResponseWriter, code int, payload interface{}) {
 	}
 }
 
-func respondWithRSS(w http.ResponseWriter, code int, payload interface{}) {
-	response, _ := xml.MarshalIndent(payload, "", "  ")
+func respondWithRSS(w http.ResponseWriter, code int, payload string) {
 	w.Header().Set("Content-Type", "application/rss+xml")
 	w.WriteHeader(code)
-	_, err := w.Write(response)
+	_, err := w.Write([]byte(payload))
 	if err != nil {
 		log.Warn(err)
 	}
