@@ -2,8 +2,13 @@ package main
 
 import (
 	"encoding/json"
+	"golang.org/x/text/runes"
+	"golang.org/x/text/transform"
+	"golang.org/x/text/unicode/norm"
 	"net/http"
+	"regexp"
 	"time"
+	"unicode"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -28,4 +33,12 @@ func getJSON(url string, target interface{}, headers map[string]string) error {
 	checkAndPanic("Error with performing GET request", err)
 	defer res.Body.Close()
 	return json.NewDecoder(res.Body).Decode(target)
+}
+
+func cleanString(unclean string) string {
+	t := transform.Chain(norm.NFD, runes.Remove(runes.In(unicode.Mn)), norm.NFC)
+	result, _, _ := transform.String(t, unclean)
+	re := regexp.MustCompile("[^a-zA-Z0-9 ]+")
+	clean := re.ReplaceAllLiteralString(result, "")
+	return clean
 }

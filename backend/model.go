@@ -18,7 +18,7 @@ func (a *App) getFeed() (string, error) {
 
 	feed.Items = []*feeds.Item{}
 
-	query := `SELECT * FROM posts WHERE published > CURRENT_TIMESTAMP - INTERVAL '183 day'`
+	query := `SELECT * FROM posts WHERE published > CURRENT_TIMESTAMP - INTERVAL '91 day'`
 	rows, err := a.DB.Query(query)
 	if err != nil {
 		return "", err

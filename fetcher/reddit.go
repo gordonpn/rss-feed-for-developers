@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-	"regexp"
 	"strings"
 	"time"
 
@@ -63,12 +62,11 @@ func fetchRedditListings(subreddits []string) []types.Post {
 		checkAndPanic("Error with parsing JSON", err)
 		data := resp["data"].(map[string]interface{})
 		children := data["children"].([]interface{})
-		re := regexp.MustCompile("[[:^ascii:]]")
 		for _, child := range children {
 			aChild := child.(map[string]interface{})
 			childData := aChild["data"].(map[string]interface{})
 			title := childData["title"].(string)
-			title = re.ReplaceAllLiteralString(title, "")
+			title = cleanString(title)
 			permalink := childData["permalink"].(string)
 			author := childData["author"].(string)
 			createdTime := childData["created_utc"].(float64)
@@ -85,7 +83,7 @@ func fetchRedditListings(subreddits []string) []types.Post {
 		}
 		log.Info(fmt.Sprintf("Processing: %s: done", subreddit))
 		rand.Seed(time.Now().UnixNano())
-		n := rand.Intn(10)
+		n := rand.Intn(5)
 		time.Sleep(time.Duration(n) * time.Second)
 	}
 	log.Info("Fetching top posts from Reddit: done")
