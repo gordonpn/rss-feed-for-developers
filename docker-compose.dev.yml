@@ -17,6 +17,17 @@ services:
     environment:
       - DEV=true
 
+  backend:
+    container_name: rss-feed-backend-dev
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    environment:
+      - DEV=true
+      - POSTGRES_HOST=localhost
+    ports:
+      - "127.0.0.1:8080:8080"
+
 volumes:
   dev-postgres-rss-feed:
     external:

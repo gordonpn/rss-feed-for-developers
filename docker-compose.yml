@@ -17,12 +17,25 @@ services:
       context: ./fetcher
       dockerfile: Dockerfile
     environment:
-      - TZ=America/Montreal
-      - REDDIT_USERNAME
-      - REDDIT_PASSWORD
-      - REDDIT_ID
-      - REDDIT_SECRET
-      - POSTGRES_NONROOT_USER
+      - FETCHER_HC_UUID
       - POSTGRES_NONROOT_PASSWORD
+      - POSTGRES_NONROOT_USER
+      - REDDIT_ID
+      - REDDIT_PASSWORD
+      - REDDIT_SECRET
+      - REDDIT_USERNAME
+      - TZ=America/Montreal
+    depends_on:
+      - postgres
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    environment:
+      - POSTGRES_NONROOT_PASSWORD
+      - POSTGRES_NONROOT_USER
+      - TZ=America/Montreal
+    restart: unless-stopped
     depends_on:
       - postgres
