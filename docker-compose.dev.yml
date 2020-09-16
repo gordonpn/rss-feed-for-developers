@@ -1,14 +1,14 @@
-version: '3.8'
+version: "3.8"
 services:
   postgres:
-    container_name: rss-feed-postgres-dev
+    container_name: rss-feed_postgres-dev
     volumes:
       - dev-postgres-rss-feed:/var/lib/postgresql/data/
     ports:
       - "127.0.0.1:5432:5432"
 
   fetcher:
-    container_name: rss-feed-fetcher-dev
+    container_name: rss-feed_fetcher-dev
     build:
       context: ./fetcher
       dockerfile: Dockerfile.dev
@@ -18,7 +18,7 @@ services:
       - DEV=true
 
   backend:
-    container_name: rss-feed-backend-dev
+    container_name: rss-feed_backend-dev
     build:
       context: ./backend
       dockerfile: Dockerfile.dev

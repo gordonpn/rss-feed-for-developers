@@ -1,0 +1,51 @@
+version: "3.8"
+services:
+  postgres:
+    container_name: rss-feed_postgres-staging
+    volumes:
+      - staging-postgres-rss-feed:/var/lib/postgresql/data/
+    expose:
+      - 5432
+    networks:
+      - rss-feed-network
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: none
+      placement:
+        constraints:
+          - node.labels.main-node == true
+
+  fetcher:
+    container_name: rss-feed_fetcher-staging
+    image: ghcr.io/gordonpn/rss-feed_fetcher:latest
+    networks:
+      - rss-feed-network
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: none
+
+  backend:
+    container_name: rss-feed_backend-staging
+    image: ghcr.io/gordonpn/rss-feed_backend:latest
+    networks:
+      - rss-feed-network
+    expose:
+      - 8080
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: none
+
+volumes:
+  staging-postgres-rss-feed:
+    external:
+      name: staging-postgres-rss-feed
+
+networks:
+  rss-feed-network:
+    driver: overlay
+  traefik-public:
+    external: true
+    driver: overlay

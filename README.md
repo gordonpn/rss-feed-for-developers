@@ -2,6 +2,7 @@
 
 [![Project Status: WIP – Initial development is in progress](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 [![Go Report Card](https://goreportcard.com/badge/github.com/gordonpn/rss-feed-for-developers)](https://goreportcard.com/report/github.com/gordonpn/rss-feed-for-developers)
+[![Build Status](https://drone.gordon-pn.com/api/badges/gordonpn/rss-feed-for-developers/status.svg)](https://drone.gordon-pn.com/gordonpn/rss-feed-for-developers)
 
 ## Description & Motivation
 
