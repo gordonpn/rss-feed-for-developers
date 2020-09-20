@@ -13,7 +13,7 @@
   - Grab anything that is from the last 6 months or last year
   - Return cache from Redis, cache valid for 24 hours
 - [ ] Endpoint that returns feed items from the last 7 days
-- [ ] Cache the RSS using TTL tag
+- [x] Cache the RSS using TTL tag
 - [ ] Cache the RSS with Redis
 
 ## Frontend
