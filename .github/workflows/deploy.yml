@@ -1,0 +1,17 @@
+name: deploy
+on:
+  workflow_run:
+    workflows: ["publish docker"]
+    branches: [master]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Deploying
+        run: echo deploying
