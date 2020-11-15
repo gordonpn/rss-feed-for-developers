@@ -1,0 +1,31 @@
+name: golangci-lint
+on:
+  push:
+  pull_request:
+
+jobs:
+  golangci:
+    strategy:
+      matrix:
+        project: [backend, fetcher]
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v2
+        with:
+          version: v1.32
+          working-directory: ${{ matrix.project }}
+          # args: -E gosec
+
+      - uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: repo,message,commit,author,action,eventName,workflow,job,took
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          MATRIX_CONTEXT: ${{ toJson(matrix) }}
+        if: always()
