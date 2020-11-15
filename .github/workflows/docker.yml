@@ -8,9 +8,7 @@ jobs:
     strategy:
       matrix:
         project: [backend, fetcher, proxy]
-        branches:
-          - develop
-          - master
+        branches: [develop, master]
 
     runs-on: ubuntu-latest
 
@@ -37,6 +35,7 @@ jobs:
         run: echo ${{ steps.buildx.outputs.platforms }}
 
       - name: Build Docker images and publish
+        working-directory: ${{ matrix.project }}
         env:
           BRANCH: ${{ matrix.branches }}
           PROJECT: ${{ matrix.project }}
@@ -45,8 +44,8 @@ jobs:
           if [ "$BRANCH" = "master" ]; then
             DOCKER_TAG="stable"
           fi
-          cd ./"$PROJECT"
-          docker buildx build -t ghcr.io/gordonpn/rss-feed_"$PROJECT":"$DOCKER_TAG" --platform linux/amd64,linux/arm64 .
+          echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
+          docker buildx build -t ghcr.io/gordonpn/rss-feed_"$PROJECT":"$DOCKER_TAG" --platform linux/amd64,linux/arm64 --push .
 
       - uses: 8398a7/action-slack@v3
         with:
