@@ -24,11 +24,12 @@
 
 ## CI/CD
 
-- [ ] Drone CI pipeline
+- [ ] GitHub Actions pipelines
+  - Snyk, Trivy, Dive, Deploy workflows
 - [x] Docker compose configs
 - [x] Deploy (prod/staging) and build scripts
 
 ## Proxy
 
-- [ ] Need a NGINX or Caddy proxy
-- [ ] Cache the RSS feed
+- [x] Need a NGINX or Caddy proxy
+- [x] Cache the RSS feed
