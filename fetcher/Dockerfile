@@ -30,7 +30,10 @@ ENV \
     GO111MODULE=on
 RUN go build -a -installsuffix cgo -o main .
 
-FROM scratch
+FROM golang:1.14-alpine
+RUN apk add --no-cache \
+    curl \
+    && rm -rf /var/cache/apk/*
 COPY --from=builder /usr/share/zoneinfo /usr/share/zoneinfo
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=builder /build/main /app/

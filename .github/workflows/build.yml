@@ -1,0 +1,36 @@
+name: build
+on: push
+
+jobs:
+  build_amd64:
+    strategy:
+      matrix:
+        go: ["1.14", "1.15"]
+        project: [backend, fetcher]
+
+    runs-on: ubuntu-latest
+
+    env:
+      GOOS: linux
+      GOARCH: amd64
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Go ${{ matrix.go }}
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ matrix.go }}
+
+      - name: Cache Go dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+
+      - name: Build Go project ${{ matrix.project }}
+        run: |
+          cd ./${{ matrix.project }}
+          go build
