@@ -26,7 +26,7 @@
 
 - [ ] Snyk workflow
 - [ ] Trivy workflow
-- [ ] Deploy workflow
+- [x] Deploy workflow
 - [x] Dive workflow
 - [x] Docker compose configs
 - [x] Deploy (prod/staging) and build scripts
