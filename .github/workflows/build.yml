@@ -32,8 +32,8 @@ jobs:
             ${{ runner.os }}-go-
 
       - name: Build Go project ${{ matrix.project }}
+        working-directory: ${{ matrix.project }}
         run: |
-          cd ./${{ matrix.project }}
           go build
 
       - uses: 8398a7/action-slack@v3
@@ -43,4 +43,4 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           MATRIX_CONTEXT: ${{ toJson(matrix) }}
-        if: failure()
+        if: failure() || cancelled()
