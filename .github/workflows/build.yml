@@ -2,17 +2,18 @@ name: build
 on: push
 
 jobs:
-  build_amd64:
+  build:
     strategy:
       matrix:
         go: ["1.14", "1.15"]
         project: [backend, fetcher]
+        arch: ["amd64", "arm64"]
 
     runs-on: ubuntu-latest
 
     env:
       GOOS: linux
-      GOARCH: amd64
+      GOARCH: ${{ matrix.arch }}
 
     steps:
       - uses: actions/checkout@v2
