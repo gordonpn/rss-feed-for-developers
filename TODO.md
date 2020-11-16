@@ -12,8 +12,8 @@
 - [x] Endpoint that returns generated RSS 2.0 and return at `https://rss.gordon-pn.com/feed`
   - Grab anything that is from the last 6 months or last year
   - Return cache from Redis, cache valid for 24 hours
-- [ ] Endpoint that returns feed items from the last 7 days
 - [x] Cache the RSS using TTL tag
+- [ ] Endpoint that returns feed items from the last 7 days
 - [ ] Cache the RSS with Redis
 
 ## Frontend
@@ -24,8 +24,10 @@
 
 ## CI/CD
 
-- [ ] GitHub Actions pipelines
-  - Snyk, Trivy, Dive, Deploy workflows
+- [ ] Snyk workflow
+- [ ] Trivy workflow
+- [ ] Deploy workflow
+- [x] Dive workflow
 - [x] Docker compose configs
 - [x] Deploy (prod/staging) and build scripts
 
