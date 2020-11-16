@@ -1,0 +1,32 @@
+name: dive
+on:
+  workflow_run:
+    workflows: ["publish docker"]
+    types:
+      - completed
+
+jobs:
+  dive:
+    strategy:
+      matrix:
+        project: [backend, fetcher, proxy]
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Dive analysis
+        uses: yuichielectric/dive-action@0.0.4
+        with:
+          image: "ghcr.io/gordonpn/rss-feed_${{ matrix.project }}:latest"
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: repo,message,commit,author,action,eventName,workflow,job,took
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          MATRIX_CONTEXT: ${{ toJson(matrix) }}
+        if: failure() || cancelled()
