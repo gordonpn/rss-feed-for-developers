@@ -14,4 +14,13 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Deploying
-        run: echo deploying
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            whoami
+            cd /home/${{ secrets.USERNAME }}/workspace/deploy
+            ls -al
