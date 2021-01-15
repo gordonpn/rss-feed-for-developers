@@ -48,6 +48,9 @@ services:
         delay: 60s
         max_attempts: 5
         window: 120s
+      placement:
+        constraints:
+          - node.labels.main-node == true
 
   backend:
     container_name: rss-feed_backend

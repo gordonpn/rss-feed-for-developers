@@ -66,7 +66,7 @@ func (a *App) handlePosts() http.HandlerFunc {
 }
 
 func (a *App) initializeRoutes() {
-	a.Router.HandleFunc("/", a.handleFeed()).Methods("GET")
+	a.Router.HandleFunc("/feed", a.handleFeed()).Methods("GET")
 	apiRoute := a.Router.PathPrefix("/api/v1").Subrouter()
 	apiRoute.HandleFunc("/healthcheck", a.handleHealthCheck()).Methods("GET")
 	apiRoute.HandleFunc("/posts", a.handlePosts()).Methods("GET")

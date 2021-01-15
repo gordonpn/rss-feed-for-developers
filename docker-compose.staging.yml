@@ -23,6 +23,8 @@ services:
       - rss-feed-network-staging
     volumes:
       - ${DATA_JSON_STAGING}:/app/data.json
+    environment:
+      - DEV=true
     deploy:
       replicas: 1
       restart_policy:

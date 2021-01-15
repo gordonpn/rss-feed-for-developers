@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"time"
 
 	"github.com/joho/godotenv"
 	log "github.com/sirupsen/logrus"
@@ -21,7 +20,6 @@ func init() {
 func main() {
 	_, present := os.LookupEnv("DEV")
 	if present {
-		time.Sleep(time.Duration(30) * time.Second)
 		job()
 	} else {
 		job()
