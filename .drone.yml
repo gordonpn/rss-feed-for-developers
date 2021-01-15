@@ -127,8 +127,8 @@ steps:
         from_secret: REDDIT_USERNAME
       REDDIT_SECRET:
         from_secret: REDDIT_SECRET
-      DATA_JSON:
-        from_secret: DATA_JSON
+      DATA_JSON_STAGING:
+        from_secret: DATA_JSON_STAGING
     volumes:
       - name: dockersock
         path: /var/run/docker.sock
