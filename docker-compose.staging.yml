@@ -22,13 +22,19 @@ services:
     networks:
       - rss-feed-network-staging
     volumes:
-      - ${DATA_JSON_STAGING}:/app/data.json
+      - type: bind
+        source: ${DATA_JSON_STAGING}
+        target: /app/data.json
+        read_only: true
     environment:
       - DEV=true
     deploy:
       replicas: 1
       restart_policy:
         condition: none
+      placement:
+        constraints:
+          - node.labels.main-node == true
 
   backend:
     container_name: rss-feed_backend-staging
