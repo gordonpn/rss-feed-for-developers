@@ -24,7 +24,7 @@ services:
       dockerfile: Dockerfile.dev
     environment:
       - DEV=true
-      - POSTGRES_HOST=localhost
+      - POSTGRES_HOST=postgres
     ports:
       - "127.0.0.1:8080:8080"
 
