@@ -63,7 +63,7 @@ steps:
       - name: dockersock
         path: /var/run/docker.sock
     commands:
-      - /drone/src/.docker/deploy_prod.sh
+      - /drone/src/.docker/scripts/deploy_prod.sh
   - name: slack notification
     image: plugins/slack
     failure: ignore
@@ -133,7 +133,7 @@ steps:
       - name: dockersock
         path: /var/run/docker.sock
     commands:
-      - /drone/src/.docker/deploy_staging.sh
+      - /drone/src/.docker/scripts/deploy_staging.sh
   - name: slack notification
     image: plugins/slack
     failure: ignore
