@@ -90,3 +90,73 @@ volumes:
   - name: dockersock
     host:
       path: /var/run/docker.sock
+
+---
+kind: pipeline
+type: docker
+name: deploy staging
+
+trigger:
+  event:
+    - promote
+  target:
+    - staging
+
+steps:
+  - name: deploy prod
+    image: docker/compose:1.25.5
+    environment:
+      TZ: America/Montreal
+      POSTGRES_DB:
+        from_secret: POSTGRES_DB
+      POSTGRES_NONROOT_PASSWORD:
+        from_secret: POSTGRES_NONROOT_PASSWORD
+      POSTGRES_NONROOT_USER:
+        from_secret: POSTGRES_NONROOT_USER
+      POSTGRES_PASSWORD:
+        from_secret: POSTGRES_PASSWORD
+      POSTGRES_USER:
+        from_secret: POSTGRES_USER
+      FETCHER_HC_UUID:
+        from_secret: FETCHER_HC_UUID
+      REDDIT_ID:
+        from_secret: REDDIT_ID
+      REDDIT_PASSWORD:
+        from_secret: REDDIT_PASSWORD
+      REDDIT_USERNAME:
+        from_secret: REDDIT_USERNAME
+      REDDIT_SECRET:
+        from_secret: REDDIT_SECRET
+      DATA_JSON:
+        from_secret: DATA_JSON
+    volumes:
+      - name: dockersock
+        path: /var/run/docker.sock
+    commands:
+      - /drone/src/.docker/deploy_staging.sh
+  - name: slack notification
+    image: plugins/slack
+    failure: ignore
+    settings:
+      channel: drone-ci
+      webhook:
+        from_secret: SLACK_WEBHOOK_URL
+      template: >
+        {{#if build.pull }}
+          *{{#success build.status}}✔{{ else }}✘{{/success}} {{ uppercasefirst build.status }}*: <https://github.com/{{ repo.owner }}/{{ repo.name }}/pull/{{ build.pull }}|Pull Request #{{ build.pull }}>
+        {{else}}
+          *{{#success build.status}}✔{{ else }}✘{{/success}} {{ uppercasefirst build.status }}: Build #{{ build.number }}* (type: `{{ build.event }}`)
+        {{/if}}
+
+        Commit: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commit/{{ build.commit }}|{{ truncate build.commit 8 }}>
+
+        Branch: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commits/{{ build.branch }}|{{ build.branch }}>
+
+        Author: {{ build.author }}
+
+        <{{ build.link }}|Visit build page ➡️>
+
+volumes:
+  - name: dockersock
+    host:
+      path: /var/run/docker.sock
