@@ -3,8 +3,10 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	log "github.com/sirupsen/logrus"
 	"time"
+
+	_ "github.com/lib/pq"
+	log "github.com/sirupsen/logrus"
 )
 
 func connectDB(a *App, pgURI string) {

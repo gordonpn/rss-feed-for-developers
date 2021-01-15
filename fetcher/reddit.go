@@ -56,7 +56,7 @@ func fetchRedditListings(subreddits []string) []types.Post {
 			continue
 		}
 		var resp map[string]interface{}
-		redditURL := fmt.Sprintf("https://oauth.reddit.com/r/%s/top?limit=2&t=day", subreddit)
+		redditURL := fmt.Sprintf("https://oauth.reddit.com/r/%s/top?limit=30&t=month", subreddit)
 		log.Info(fmt.Sprintf("Processing: %s", subreddit))
 		err := getJSON(redditURL, &resp, headers)
 		checkAndPanic("Error with parsing JSON", err)

@@ -8,7 +8,7 @@
 
 I like to consume Reddit, but ideally in a low-volume amount. It is way too easy to open Reddit and start going down the rabbit hole.
 
-I like Dev.to as well, but let's be honest, there's a lot of badly written and less interesting articles there.
+I like Dev.to as well, but it requires too much sifting through.
 
 ### Problem 1
 
@@ -24,6 +24,8 @@ Generate my own RSS feed!
 
 ## How It Works
 
-Deployed on a bare metal home server, the `fetcher` service gets the top 2 posts from each of subreddit in a list, and the top 30 posts from the last 30 days from Dev.to, both twice per day.
+Deployed on a bare metal home server, the `fetcher` service gets the top 30 posts (from the past month) from each of the subreddits in a config file, and the top 30 posts from the last 30 days from Dev.to, both twice per day.
 
 The `backend` service will return (WIP) the generated feed as a valid RSS that anybody can subscribe through their preferred RSS reader, mine is Feedly.
+
+In the future, I'd like to make it possible for visitors to create a their own personalized feeds (with a unique URL to subscribe to). _Keyword: future_.
