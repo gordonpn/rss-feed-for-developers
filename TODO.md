@@ -30,6 +30,7 @@
 - [x] Dive workflow
 - [x] Docker compose configs
 - [x] Deploy (prod/staging) and build scripts
+- [ ] Improve deploy scripts (if postgres volumes don't exist, then create and init them)
 
 ## Proxy
 
