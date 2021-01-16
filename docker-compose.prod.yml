@@ -32,7 +32,10 @@ services:
     networks:
       - rss-feed-network
     volumes:
-      - ${DATA_JSON}:/app/data.json
+      - type: bind
+        source: ${DATA_JSON}
+        target: /app/data.json
+        read_only: true
     deploy:
       replicas: 1
       update_config:
