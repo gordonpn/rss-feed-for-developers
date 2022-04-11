@@ -6,6 +6,10 @@
 - [x] Insert the data into the database
 - [x] Mount data.json from host machine to Docker container to allow externally changing the configuration
 - [x] Schedule to run twice per day
+- [ ] Fetch Reddit post descriptions
+  - Maybe use subreddit title in description
+- [ ] Only take Reddit posts with more than 10 votes? TBD
+  - How to fetch good content on subreddits with less content and less members?
 
 ## Backend
 
@@ -21,12 +25,13 @@
 - [ ] Explain what, why, how
 - [ ] Show preview of the feed (items from the last week (7 days))
 - [ ] Mount data.json from host machine to Docker container to show on the website which subreddits are being used for the feed at the moment
+- [ ] Temporary web page
 
 ## CI/CD
 
 - [ ] Snyk workflow
 - [ ] Trivy workflow
-- [ ] Deploy workflow
+- [x] Deploy workflow
 - [x] Dive workflow
 - [x] Docker compose configs
 - [x] Deploy (prod/staging) and build scripts
