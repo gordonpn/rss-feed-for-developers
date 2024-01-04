@@ -1,7 +1,8 @@
 <!--
---- Readme.md Snippet without images Start ---
+&lt;--- Readme.md Snippet without images Start ---&gt;
 ## Tech Stack
 gordonpn/rss-feed-for-developers is built on the following main stack:
+
 - [Drone.io](https://drone.io/) – Continuous Integration
 - [Golang](http://golang.org/) – Languages
 - [NGINX](http://nginx.org) – Web Servers
@@ -12,11 +13,13 @@ gordonpn/rss-feed-for-developers is built on the following main stack:
 - [Docker](https://www.docker.com/) – Virtual Machine Platforms & Containers
 
 Full tech stack [here](/techstack.md)
---- Readme.md Snippet without images End ---
 
---- Readme.md Snippet with images Start ---
+&lt;--- Readme.md Snippet without images End ---&gt;
+
+&lt;--- Readme.md Snippet with images Start ---&gt;
 ## Tech Stack
 gordonpn/rss-feed-for-developers is built on the following main stack:
+
 - <img width='25' height='25' src='https://img.stackshare.io/service/668/R_wMcCqN_400x400.png' alt='Drone.io'/> [Drone.io](https://drone.io/) – Continuous Integration
 - <img width='25' height='25' src='https://img.stackshare.io/service/1005/O6AczwfV_400x400.png' alt='Golang'/> [Golang](http://golang.org/) – Languages
 - <img width='25' height='25' src='https://img.stackshare.io/service/1052/YMxUfyWf.png' alt='NGINX'/> [NGINX](http://nginx.org) – Web Servers
@@ -27,14 +30,15 @@ gordonpn/rss-feed-for-developers is built on the following main stack:
 - <img width='25' height='25' src='https://img.stackshare.io/service/586/n4u37v9t_400x400.png' alt='Docker'/> [Docker](https://www.docker.com/) – Virtual Machine Platforms & Containers
 
 Full tech stack [here](/techstack.md)
---- Readme.md Snippet with images End ---
+
+&lt;--- Readme.md Snippet with images End ---&gt;
 -->
 <div align="center">
 
 # Tech Stack File
 ![](https://img.stackshare.io/repo.svg "repo") [gordonpn/rss-feed-for-developers](https://github.com/gordonpn/rss-feed-for-developers)![](https://img.stackshare.io/public_badge.svg "public")
 <br/><br/>
-|9<br/>Tools used|11/09/23 <br/>Report generated|
+|9<br/>Tools used|01/04/24 <br/>Report generated|
 |------|------|
 </div>
 
@@ -128,4 +132,4 @@ Full tech stack [here](/techstack.md)
 <br/>
 <div align='center'>
 
-Generated via [Stack File](https://github.com/apps/stack-file)
+Generated via [Stack File](https://github.com/marketplace/stack-file)
